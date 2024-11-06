@@ -1,0 +1,173 @@
+.customer-control-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    font-family: 'Arial, sans-serif';
+  }
+  
+  .header-section {
+    text-align: center;
+    background-color: #006d77;
+    color: #e5e5e5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .customer-avatar {
+    border-radius: 50%;
+    width: 150px;
+    margin-top: 15px;
+  }
+  
+  .personal-details-section,
+  .form-section,
+  .accounts-section,
+  .transactions-section {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .scrollable-section {
+    max-height: 300px; /* Adjust as needed */
+    overflow-y: auto;
+  }
+  
+  .detail-item,
+  .account-detail,
+  .form-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-left: 10px;
+  }
+  
+  button {
+    background-color: #006d77;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #004c52;
+  }
+  
+  .delete-button {
+    background-color: #d90429;
+    margin-top: 5px;
+  }
+  
+  .delete-button:hover {
+    background-color: #a0001c;
+  }
+  
+  .transactions-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .transactions-table th,
+  .transactions-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .transactions-table th {
+    background-color: #006d77;
+    color: #ffffff;
+  }
+  
+  #addAccountForm {
+    display: none;
+  }
+  
+  #addAccountForm.visible {
+    display: block;
+  }
+  /* Hide scrollbar */
+.customer-control-container {
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  }
+  
+  .customer-control-container::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
+  
+  /* Align input boxes */
+  .personal-details-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .detail-item {
+    display: flex;
+    flex-direction: row; /* This ensures label and input are aligned horizontally */
+    align-items: center; /* Ensures vertical alignment of label and input */
+    margin-bottom: 10px;
+  }
+  
+  .detail-item label {
+    margin-right: 15px; /* Space between the label and input */
+    font-weight: bold;
+    min-width: 120px; /* Set a minimum width for the label to keep them aligned */
+  }
+  
+  .detail-item input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Allows input to take up the remaining space */
+  }
+  
+  /* Account Details Alignment */
+.accounts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .account-card {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .account-detail {
+    display: flex; /* Align label and input in a row */
+    flex-direction: row; /* Ensure label and input are aligned horizontally */
+    align-items: center; /* Vertically center the label and input */
+    margin-bottom: 10px;
+  }
+  
+  .account-detail label {
+    margin-right: 10px; /* Add space between the label and input */
+    font-weight: bold;
+    min-width: 120px; /* Set a consistent width for the labels */
+  }
+  
+  .account-detail input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex-grow: 1; /* Make input field take up the remaining space */
+  }
+  
