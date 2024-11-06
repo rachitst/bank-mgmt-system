@@ -1,0 +1,78 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+.login-container {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    text-align: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.808), rgba(12, 12, 12, 0.7)), url('../images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.typing-animation {
+    font-size: 2.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 4px solid #0d6efd;
+    width: 0;
+    animation: typing 4s steps(30) forwards, blink 0.75s step-end infinite;
+    margin: 0 auto 40px;
+    text-align: center;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #0d6efd;
+    }
+}
+
+.animated-card {
+    animation: slideIn 2s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
