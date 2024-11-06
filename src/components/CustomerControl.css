@@ -171,3 +171,22 @@
     flex-grow: 1; /* Make input field take up the remaining space */
   }
   
+  .edit-button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .save-button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }

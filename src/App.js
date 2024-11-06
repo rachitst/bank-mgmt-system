@@ -9,6 +9,7 @@ import PostCustomer from './components/AdminCustomer';
 import CustomerControl from './components/CustomerControl';
 import PostBranch from './components/AdminBranch';
 import Transaction from './components/Transaction';
+import EditCustomerControl from './components/EditCustomerControl'; // Import the EditCustomerControl component
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path='/admin/branch' element={<PostBranch />} />
         <Route path='/customer' element={<CustomerControl />} />
         <Route path='/customer/transaction' element={<Transaction />} />
+        <Route path='/customer/edit' element={<EditCustomerControl />} /> {/* Add a route for the edit page */}
       </Routes>
     </Router>
   );

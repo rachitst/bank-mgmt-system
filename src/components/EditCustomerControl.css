@@ -1,0 +1,142 @@
+.edit-customer-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  font-family: 'Arial, sans-serif';
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.edit-customer-container::-webkit-scrollbar {
+  display: none;
+}
+
+.header-section {
+  text-align: center;
+  background-color: #006d77;
+  color: #e5e5e5;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.customer-avatar {
+  border-radius: 50%;
+  width: 150px;
+  margin-top: 15px;
+}
+
+.username {
+  color: #e5e5e5;
+  margin-top: 10px;
+}
+
+.card {
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card h1 {
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  margin-right: 15px;
+  font-weight: bold;
+  min-width: 120px;
+  color: #333;
+}
+
+.form-input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #006d77;
+  box-shadow: 0 0 3px rgba(0, 109, 119, 0.2);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn {
+  background-color: #006d77;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.save-btn {
+  background-color: #006d77;
+}
+
+.save-btn:hover {
+  background-color: #004c52;
+}
+
+.cancel-btn {
+  background-color: #d90429;
+}
+
+.cancel-btn:hover {
+  background-color: #a0001c;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+      width: 95%;
+      padding: 15px;
+  }
+
+  .form-group {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .form-group label {
+      margin-bottom: 5px;
+  }
+
+  .form-input {
+      width: 100%;
+  }
+
+  .form-actions {
+      flex-direction: column;
+  }
+
+  .btn {
+      width: 100%;
+      margin-bottom: 10px;
+  }
+}

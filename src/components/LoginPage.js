@@ -8,7 +8,7 @@ const LoginPage = () => {
 
   return (
     <div className="login-container"> 
-      <h1 className="typing-animation" style={{ marginBottom: '40px' }}>
+      <h1 className="typing-animation" style={{ marginBottom: '40px', color: 'white' }}>
         Welcome to the Bank Management System!
       </h1>
       <div className="row justify-content-center">

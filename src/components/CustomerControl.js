@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import avatar from '../images/avatar.png';
 import './CustomerControl.css';
+import { useNavigate } from 'react-router-dom';
 
 const CustomerControl = () => {
+  const navigate = useNavigate();  // Initialize useNavigate hook
   const [id, setID] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -16,6 +18,26 @@ const CustomerControl = () => {
   const [allTransactions, setTransaction] = useState([]);
   const [showAccountDetails, setShowAccountDetails] = useState(false);
   const [showTransactions, setShowTransactions] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+
+  const SaveChanges = async () => {
+    try {
+      const body = { name, phone, email, houseNo, city, zipcode };
+      const query = await fetch(`http://localhost:5000/customer/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (query.ok) {
+        alert('Details updated successfully');
+        setIsEditing(false);  // Exit edit mode
+      }
+    } catch (error) {
+      console.error('Error updating customer details:', error);
+    }
+  };
+
 
   const DeleteAccount = async (accountId) => {
     try {
@@ -96,6 +118,10 @@ const CustomerControl = () => {
     GetCustomer();
   }, []);
 
+  const handleEditClick = () => {
+    navigate(`/customer/edit?username=${username}`);
+  };
+
   return (
     <div className="customer-control-container" style={{ height: '100vh', overflowY: 'auto' }}>
       {/* Header Section */}
@@ -104,7 +130,7 @@ const CustomerControl = () => {
         <img src={avatar} alt="Customer Avatar" className="customer-avatar" />
         <h3 className="username">@{username}</h3>
       </div>
-  
+
       {/* Personal Details Section */}
       <div className="personal-details-section">
         <h2>Personal Details</h2>
@@ -114,30 +140,70 @@ const CustomerControl = () => {
         </div>
         <div className="detail-item">
           <label>Name:</label>
-          <input type="text" value={name} readOnly />
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            readOnly={!isEditing}
+          />
         </div>
         <div className="detail-item">
           <label>Phone:</label>
-          <input type="text" value={phone} readOnly />
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            readOnly={!isEditing}
+          />
         </div>
         <div className="detail-item">
           <label>Email:</label>
-          <input type="text" value={email} readOnly />
+          <input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            readOnly={!isEditing}
+          />
         </div>
         <div className="detail-item">
           <label>House No:</label>
-          <input type="text" value={houseNo} readOnly />
+          <input
+            type="text"
+            value={houseNo}
+            onChange={(e) => setHouse(e.target.value)}
+            readOnly={!isEditing}
+          />
         </div>
         <div className="detail-item">
           <label>City:</label>
-          <input type="text" value={city} readOnly />
+          <input
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            readOnly={!isEditing}
+          />
         </div>
         <div className="detail-item">
           <label>Zipcode:</label>
-          <input type="text" value={zipcode} readOnly />
+          <input
+            type="text"
+            value={zipcode}
+            onChange={(e) => setZipCode(e.target.value)}
+            readOnly={!isEditing}
+          />
         </div>
-      </div>
-  
+        {/* <div className="buttons">
+        {!isEditing ? (
+          <button onClick={() => setIsEditing(true)}>Edit</button> // Enable editing in-place
+        ) : (
+          <>
+            <button onClick={() => setIsEditing(false)}>Cancel</button> 
+            <button onClick={SaveChanges}>Save</button> 
+          </>
+        )}
+      </div> */}
+    </div>
+
       {/* Actions Section */}
       <div className="actions-section">
         <button
@@ -147,6 +213,9 @@ const CustomerControl = () => {
         >
           Create Account
         </button>
+        <button onClick={handleEditClick} className="mr-4" style={{ marginRight: '20px', marginBottom: '20px' }}>
+          Edit Customer
+        </button>
         <button onClick={GetAccountDetails} className="mr-4" style={{ marginRight: '20px', marginBottom: '20px' }}>
           Get Account Details
         </button>
@@ -154,7 +223,7 @@ const CustomerControl = () => {
           View Transactions
         </button>
       </div>
-  
+
       {/* Add Account Form */}
       <div id="addAccountForm" className="form-section account-card">
         <h3>Add New Account</h3>
@@ -169,13 +238,14 @@ const CustomerControl = () => {
         </div>
         <button onClick={AddAccount}>Add Account</button>
       </div>
-  
+
+
       {/* Account Details Section */}
       {showAccountDetails && (
         <div className="accounts-section">
           <h3>Your Accounts</h3>
           <div className="accounts-container">
-            {myAccounts.map((account, index) => (
+            {myAccounts?.map((account, index) => (
               <div key={account.account_id} className="account-card">
                 <h3>Account #{index + 1}</h3>
                 <div className="account-detail">
@@ -190,19 +260,18 @@ const CustomerControl = () => {
                   <label>Date Opened:</label>
                   <input type="text" value={new Date(account.created_at).toLocaleString()} readOnly />
                 </div>
-                
                 <div className="buttons">
-                <button type="button" style={{ marginRight: '10px', marginBottom: '20px' }}>Transaction</button>
-                <button type="button" className="delete-button" onClick={() => DeleteAccount(account.account_id)}>
-                  Delete
-                </button>
+                  <button type="button" style={{ marginRight: '10px', marginBottom: '20px' }}>Transaction</button>
+                  <button type="button" className="delete-button" onClick={() => DeleteAccount(account.account_id)}>
+                    Delete
+                  </button>
                 </div>
               </div>
             ))}
           </div>
         </div>
       )}
-  
+
       {/* Transactions Section */}
       {showTransactions && (
         <div className="transactions-section">
@@ -236,7 +305,7 @@ const CustomerControl = () => {
         </div>
       )}
     </div>
-  );   
+  );
 };
 
 export default CustomerControl;
