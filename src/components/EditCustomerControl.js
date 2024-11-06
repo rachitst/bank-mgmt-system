@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './EditCustomerControl.css'; 
+import avatar from '../images/avatar.png';
 
 const EditCustomerControl = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const customerId = params.get('id'); 
+  const username = params.get('username'); 
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [houseNo, setHouse] = useState('');
+  const [house_no, setHouse] = useState('');
   const [city, setCity] = useState('');
   const [zipcode, setZipCode] = useState('');
 
   useEffect(() => {
     const fetchCustomer = async () => {
-      const response = await fetch(`http://localhost:5000/customer/${customerId}`);
+      const response = await fetch(`http://localhost:5000/customer/${username}`);
       const data = await response.json();
       setName(data.name);
       setPhone(data.phone);
@@ -27,21 +28,26 @@ const EditCustomerControl = () => {
       setZipCode(data.zipcode);
     };
     fetchCustomer();
-  }, [customerId]);
+  }, [username]);
 
   const handleSave = async () => {
-    const updatedData = { name, phone, email, houseNo, city, zipcode };
-    await fetch(`http://localhost:5000/customer/${customerId}`, {
+    const updatedData = { name, phone, email, house_no, city, zipcode };
+    await fetch(`http://localhost:5000/customer/${username}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedData),
     });
     alert('Customer details updated');
-    navigate('/customer-control'); 
+    navigate(`/customer/?username=${username}`); 
   };
 
   return (
-    <div className="edit-customer-container">
+    <div className="edit-customer-container" style={{ height: '100vh', overflowY: 'auto' }}>
+      <div className="header-section">
+        <h1>Customer Details</h1>
+        <img src={avatar} alt="Customer Avatar" className="customer-avatar" />
+        <h3 className="username">@{username}</h3>
+      </div>
       <div className="card">
         <h1>Edit Customer Details</h1>
 
@@ -79,7 +85,7 @@ const EditCustomerControl = () => {
           <label>House No:</label>
           <input
             type="text"
-            value={houseNo}
+            value={house_no}
             onChange={(e) => setHouse(e.target.value)}
             className="form-input"
           />
@@ -109,7 +115,7 @@ const EditCustomerControl = () => {
           <button onClick={handleSave} className="btn save-btn">
             Save Changes
           </button>
-          <button onClick={() => navigate('/customer-control')} className="btn cancel-btn">
+          <button onClick={() => navigate(`/customer?username=${username}`)} className="btn cancel-btn">
             Cancel
           </button>
         </div>

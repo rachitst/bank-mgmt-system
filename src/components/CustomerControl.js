@@ -119,8 +119,7 @@ const CustomerControl = () => {
   }, []);
 
   const handleEditClick = () => {
-    // Redirect to the EditCustomerControl page when "Edit" is clicked
-    navigate(`/customer/edit?id=${id}`);
+    navigate(`/customer/edit?username=${username}`);
   };
 
   return (
@@ -193,17 +192,16 @@ const CustomerControl = () => {
             readOnly={!isEditing}
           />
         </div>
-        <div className="buttons">
-        {/* Toggle between Edit and Cancel button */}
+        {/* <div className="buttons">
         {!isEditing ? (
           <button onClick={() => setIsEditing(true)}>Edit</button> // Enable editing in-place
         ) : (
           <>
-            <button onClick={() => setIsEditing(false)}>Cancel</button> {/* Cancel editing */}
-            <button onClick={SaveChanges}>Save</button> {/* Save changes in-place */}
+            <button onClick={() => setIsEditing(false)}>Cancel</button> 
+            <button onClick={SaveChanges}>Save</button> 
           </>
         )}
-      </div>
+      </div> */}
     </div>
 
       {/* Actions Section */}
@@ -247,7 +245,7 @@ const CustomerControl = () => {
         <div className="accounts-section">
           <h3>Your Accounts</h3>
           <div className="accounts-container">
-            {myAccounts.map((account, index) => (
+            {myAccounts?.map((account, index) => (
               <div key={account.account_id} className="account-card">
                 <h3>Account #{index + 1}</h3>
                 <div className="account-detail">

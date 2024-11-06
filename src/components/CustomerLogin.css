@@ -24,6 +24,7 @@ body, html {
     margin-bottom: 30px;
     text-align: center;
     animation: fadeIn 1.2s ease-in-out;
+    color: white;
 }
 
 @keyframes fadeIn {
