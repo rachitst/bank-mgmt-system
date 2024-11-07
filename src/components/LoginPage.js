@@ -16,7 +16,10 @@ const LoginPage = () => {
           <div className="card text-black bg-white shadow-lg animated-card" style={{ marginBottom: '30px' }}>
             <div className="card-header d-flex justify-content-between align-items-center">
               <h3>Customer</h3>
-              <button className="btn btn-outline-success" onClick={() => navigate('/customer/login')}>Login</button>
+              <div>
+              <button className="btn btn-outline-success" onClick={() => navigate('/customer/login')} style={{ marginRight: "20px"}}>Login</button>
+              <button className="btn btn-outline-success" onClick={() => navigate('/customer/signup')}>Sign Up</button>
+              </div>
             </div>
             <div className="card-body text-center">
               <img src={customer} alt="Customer" height="150px" className="rounded mx-auto d-block mt-3" />
@@ -27,7 +30,10 @@ const LoginPage = () => {
           <div className="card text-black bg-white shadow-lg animated-card" style={{ marginBottom: '30px' }}>
             <div className="card-header d-flex justify-content-between align-items-center">
               <h3>Employee</h3>
-              <button className="btn btn-outline-success" onClick={() => navigate('/employee/login')}>Login</button>
+              <div>
+              <button className="btn btn-outline-success" onClick={() => navigate('/employee/login')}style={{ marginRight: "20px"}}>Login</button>
+              <button className="btn btn-outline-success" onClick={() => navigate('/employee/signup')}>Sign Up</button>
+              </div>
             </div>
             <div className="card-body text-center">
               <img src={employee} alt="Employee" height="150px" className="rounded mx-auto d-block mt-3" />

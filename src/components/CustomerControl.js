@@ -1,75 +1,99 @@
-import React, { useState, useEffect } from 'react';
-import avatar from '../images/avatar.png';
-import './CustomerControl.css';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import avatar from "../images/avatar.png";
+import "./CustomerControl.css";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CustomerControl = () => {
-  const navigate = useNavigate();  // Initialize useNavigate hook
-  const [id, setID] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [houseNo, setHouse] = useState('');
-  const [city, setCity] = useState('');
-  const [zipcode, setZipCode] = useState('');
-  const [username, setUsername] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate hook
+  const [id, setID] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [houseNo, setHouse] = useState("");
+  const [city, setCity] = useState("");
+  const [zipcode, setZipCode] = useState("");
+  const [username, setUsername] = useState("");
   const [myAccounts, setAccounts] = useState([]);
-  const [currentBalance, setBalance] = useState('');
+  const [currentBalance, setCurrBalance] = useState("");
   const [allTransactions, setTransaction] = useState([]);
   const [showAccountDetails, setShowAccountDetails] = useState(false);
   const [showTransactions, setShowTransactions] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-
+  const [balance, setBalance] = useState(null);
 
   const SaveChanges = async () => {
     try {
       const body = { name, phone, email, houseNo, city, zipcode };
       const query = await fetch(`http://localhost:5000/customer/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       if (query.ok) {
-        alert('Details updated successfully');
-        setIsEditing(false);  // Exit edit mode
+        alert("Details updated successfully");
+        setIsEditing(false); // Exit edit mode
       }
     } catch (error) {
-      console.error('Error updating customer details:', error);
+      console.error("Error updating customer details:", error);
     }
   };
 
+  const fetchBalance = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/customer/balance/${username}`
+      );
+      setBalance(response.data.total_balance);
+      console.log("balance", balance);
+    } catch (error) {
+      console.error("Error fetching balance:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (username) {
+      fetchBalance();
+    }
+  }, [username]);
+
+  const goToWithdrawal = () => {
+    navigate("/customer/withdrawal", { state: { username } });
+  };
 
   const DeleteAccount = async (accountId) => {
     try {
       await fetch(`http://localhost:5000/accounts/${accountId}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
-      alert('Account deleted successfully');
-      setAccounts((prev) => prev.filter((account) => account.account_id !== accountId));
+      alert("Account deleted successfully");
+      setAccounts((prev) =>
+        prev.filter((account) => account.account_id !== accountId)
+      );
     } catch (error) {
-      console.error('Error deleting account:', error);
+      console.error("Error deleting account:", error);
     }
   };
 
   const AddAccount = async () => {
     if (!currentBalance || isNaN(currentBalance)) {
-      alert('Please enter a valid balance');
+      alert("Please enter a valid balance");
       return;
     }
 
     try {
       const body = { customer_id: id, current_balance: currentBalance };
-      const query = await fetch('http://localhost:5000/accounts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const query = await fetch("http://localhost:5000/accounts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       if (query.ok) {
-        alert('Account added successfully');
+        alert("Account added successfully");
         GetAccountDetails();
       }
     } catch (error) {
-      console.error('Error adding account:', error);
+      console.error("Error adding account:", error);
     }
   };
 
@@ -80,7 +104,7 @@ const CustomerControl = () => {
       setAccounts(data);
       setShowAccountDetails(true);
     } catch (error) {
-      console.error('Error fetching account details:', error);
+      console.error("Error fetching account details:", error);
     }
   };
 
@@ -91,15 +115,17 @@ const CustomerControl = () => {
       setTransaction(data);
       setShowTransactions(true);
     } catch (error) {
-      console.error('Error fetching transactions:', error);
+      console.error("Error fetching transactions:", error);
     }
   };
 
   const GetCustomer = async () => {
     try {
       const params = new URLSearchParams(window.location.search);
-      const usernameParam = params.get('username');
-      const query = await fetch(`http://localhost:5000/customer/${usernameParam}`);
+      const usernameParam = params.get("username");
+      const query = await fetch(
+        `http://localhost:5000/customer/${usernameParam}`
+      );
       const data = await query.json();
       setID(data.customer_id);
       setName(data.name);
@@ -110,7 +136,7 @@ const CustomerControl = () => {
       setZipCode(data.zipcode);
       setUsername(data.username);
     } catch (error) {
-      console.error('Error fetching customer details:', error);
+      console.error("Error fetching customer details:", error);
     }
   };
 
@@ -123,12 +149,36 @@ const CustomerControl = () => {
   };
 
   return (
-    <div className="customer-control-container" style={{ height: '100vh', overflowY: 'auto' }}>
+    <div
+      className="customer-control-container"
+      style={{ height: "100vh", overflowY: "auto" }}
+    >
       {/* Header Section */}
       <div className="header-section">
         <h1>Customer Details</h1>
-        <img src={avatar} alt="Customer Avatar" className="customer-avatar" />
-        <h3 className="username">@{username}</h3>
+        <div className="details">
+          <div className="profile">
+            <img
+              src={avatar}
+              alt="Customer Avatar"
+              className="customer-avatar"
+            />
+            <h3 className="username">Welcome, {username}</h3>
+          </div>
+          <div className="box">
+            {balance !== null ? (
+              <div className="balance-display" style={{ width: "300px" }}>
+                <h3>Your Current Balance</h3>
+                <p className="balance-amount">${balance}</p>
+              </div>
+            ) : (
+              <p>Loading balance...</p>
+            )}
+          </div>
+        </div>
+        <button className="withdraw-button" onClick={goToWithdrawal}>
+          See Withdrawal Details
+        </button>
       </div>
 
       {/* Personal Details Section */}
@@ -202,54 +252,69 @@ const CustomerControl = () => {
           </>
         )}
       </div> */}
-    </div>
+      </div>
 
       {/* Actions Section */}
       <div className="actions-section">
         <button
-          onClick={() => document.getElementById('addAccountForm').classList.toggle('visible')}
+          onClick={() =>
+            document
+              .getElementById("addAccountForm")
+              .classList.toggle("visible")
+          }
           className="mr-4"
-          style={{ marginRight: '20px', marginBottom: '20px' }}
+          style={{ marginRight: "20px", marginBottom: "20px" }}
         >
-          Create Account
+          Add Transaction
         </button>
-        <button onClick={handleEditClick} className="mr-4" style={{ marginRight: '20px', marginBottom: '20px' }}>
+        <button
+          onClick={handleEditClick}
+          className="mr-4"
+          style={{ marginRight: "20px", marginBottom: "20px" }}
+        >
           Edit Customer
         </button>
-        <button onClick={GetAccountDetails} className="mr-4" style={{ marginRight: '20px', marginBottom: '20px' }}>
-          Get Account Details
+        <button
+          onClick={GetAccountDetails}
+          className="mr-4"
+          style={{ marginRight: "20px", marginBottom: "20px" }}
+        >
+          Get Transaction Details
         </button>
-        <button onClick={GetTransactions} className="mr-4" style={{ marginRight: '20px', marginBottom: '20px' }}>
-          View Transactions
+        <button
+          onClick={GetTransactions}
+          className="mr-4"
+          style={{ marginRight: "20px", marginBottom: "20px" }}
+        >
+          View All Transactions
         </button>
       </div>
 
       {/* Add Account Form */}
       <div id="addAccountForm" className="form-section account-card">
-        <h3>Add New Account</h3>
+        <h3>Add New Transaction</h3>
         <div className="account-detail">
           <label>Balance:</label>
           <input
             type="number"
-            placeholder="Enter initial balance"
+            placeholder="Enter amount"
             value={currentBalance}
-            onChange={(e) => setBalance(e.target.value)}
+            onChange={(e) => setCurrBalance(e.target.value)}
           />
         </div>
-        <button onClick={AddAccount}>Add Account</button>
+        <button onClick={AddAccount}>Add Transaction</button>
       </div>
-
 
       {/* Account Details Section */}
       {showAccountDetails && (
         <div className="accounts-section">
-          <h3>Your Accounts</h3>
+          <h3>Your Transactions</h3>
           <div className="accounts-container">
             {myAccounts?.map((account, index) => (
               <div key={account.account_id} className="account-card">
-                <h3>Account #{index + 1}</h3>
+                <h3>Transaction #{index + 1}</h3>
                 <div className="account-detail">
-                  <label>Account No:</label>
+                  <label>Transaction ID:</label>
                   <input type="text" value={account.account_id} readOnly />
                 </div>
                 <div className="account-detail">
@@ -257,12 +322,25 @@ const CustomerControl = () => {
                   <input type="text" value={account.current_balance} readOnly />
                 </div>
                 <div className="account-detail">
-                  <label>Date Opened:</label>
-                  <input type="text" value={new Date(account.created_at).toLocaleString()} readOnly />
+                  <label>Date :</label>
+                  <input
+                    type="text"
+                    value={new Date(account.created_at).toLocaleString()}
+                    readOnly
+                  />
                 </div>
                 <div className="buttons">
-                  <button type="button" style={{ marginRight: '10px', marginBottom: '20px' }}>Transaction</button>
-                  <button type="button" className="delete-button" onClick={() => DeleteAccount(account.account_id)}>
+                  <button
+                    type="button"
+                    style={{ marginRight: "10px", marginBottom: "20px" }}
+                  >
+                    Transaction
+                  </button>
+                  <button
+                    type="button"
+                    className="delete-button"
+                    onClick={() => DeleteAccount(account.account_id)}
+                  >
                     Delete
                   </button>
                 </div>
@@ -296,7 +374,9 @@ const CustomerControl = () => {
                     <td>{transaction.action}</td>
                     <td>{transaction.amount}</td>
                     <td>{transaction.branch_id}</td>
-                    <td>{new Date(transaction.transaction_date).toLocaleString()}</td>
+                    <td>
+                      {new Date(transaction.transaction_date).toLocaleString()}
+                    </td>
                   </tr>
                 ))}
               </tbody>
