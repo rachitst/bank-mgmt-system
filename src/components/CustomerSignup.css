@@ -17,7 +17,6 @@ body, html {
     height: 100vh;
     background: linear-gradient(to right, #0f4c75, #2b2e4a);
     color: white;
-    overflow-y: auto;
     padding: 20px;
 }
 
@@ -38,16 +37,17 @@ body, html {
     }
 }
 
-.login-card {
-    background: white;
-    color: #333;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    animation: slideIn 1s ease;
+.login-card { 
+  background: white; 
+  color: #333; 
+  padding: 30px; 
+  border-radius: 10px; 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); 
+  width: 100% !important; 
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: center; 
+  animation: slideIn 1s ease; 
 }
 
 @keyframes slideIn {

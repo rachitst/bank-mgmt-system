@@ -21,6 +21,10 @@ const CustomerControl = () => {
   const [showTransactions, setShowTransactions] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [balance, setBalance] = useState(null);
+  const [accountId, setAccountId] = useState('');
+  const [branchId, setBranchId] = useState('');
+  const [amount, setAmount] = useState('');
+  const [action, setAction] = useState('deposit');
 
   const SaveChanges = async () => {
     try {
@@ -94,6 +98,38 @@ const CustomerControl = () => {
       }
     } catch (error) {
       console.error("Error adding account:", error);
+    }
+  };
+
+  const handleTransactionSubmit = async (e) => {
+    e.preventDefault();
+    if (!accountId || !branchId || !amount || isNaN(amount)) {
+      alert("Please enter valid transaction details");
+      return;
+    }
+
+    try {
+      const body = {
+        account_id: parseInt(accountId, 10),
+        branch_id: parseInt(branchId, 10),
+        amount: parseFloat(amount),
+        action,
+      };
+
+      const response = await fetch("http://localhost:5000/transaction", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        alert(`Transaction completed successfully. Transaction ID: ${result.id}`);
+      } else {
+        alert("Transaction failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error creating transaction:", error);
     }
   };
 
@@ -279,7 +315,7 @@ const CustomerControl = () => {
           className="mr-4"
           style={{ marginRight: "20px", marginBottom: "20px" }}
         >
-          Get Transaction Details
+          Get Account Details
         </button>
         <button
           onClick={GetTransactions}
@@ -292,29 +328,61 @@ const CustomerControl = () => {
 
       {/* Add Account Form */}
       <div id="addAccountForm" className="form-section account-card">
-        <h3>Add New Transaction</h3>
-        <div className="account-detail">
-          <label>Balance:</label>
-          <input
-            type="number"
-            placeholder="Enter amount"
-            value={currentBalance}
-            onChange={(e) => setCurrBalance(e.target.value)}
-          />
-        </div>
-        <button onClick={AddAccount}>Add Transaction</button>
+      <form onSubmit={handleTransactionSubmit}>
+      <h2>Create New Transaction</h2>
+      
+      <label>
+        Account ID:
+        <input
+          type="number"
+          value={accountId}
+          onChange={(e) => setAccountId(e.target.value)}
+          required
+        />
+      </label>
+      
+      <label>
+        Branch ID:
+        <input
+          type="number"
+          value={branchId}
+          onChange={(e) => setBranchId(e.target.value)}
+          required
+        />
+      </label>
+      
+      <label>
+        Amount:
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          required
+        />
+      </label>
+      
+      <label>
+        Action:
+        <select  className="select-input" value={action} onChange={(e) => setAction(e.target.value)} required>
+          <option value="deposit">Deposit</option>
+          <option value="withdrawal">Withdrawal</option>
+        </select>
+      </label>
+
+      <button type="submit">Submit Transaction</button>
+    </form>
       </div>
 
       {/* Account Details Section */}
       {showAccountDetails && (
         <div className="accounts-section">
-          <h3>Your Transactions</h3>
+          <h3>Your Accounts</h3>
           <div className="accounts-container">
             {myAccounts?.map((account, index) => (
               <div key={account.account_id} className="account-card">
-                <h3>Transaction #{index + 1}</h3>
+                <h3>Account #{index + 1}</h3>
                 <div className="account-detail">
-                  <label>Transaction ID:</label>
+                  <label>Account ID:</label>
                   <input type="text" value={account.account_id} readOnly />
                 </div>
                 <div className="account-detail">
@@ -333,6 +401,7 @@ const CustomerControl = () => {
                   <button
                     type="button"
                     style={{ marginRight: "10px", marginBottom: "20px" }}
+                    onClick={GetTransactions}
                   >
                     Transaction
                   </button>
